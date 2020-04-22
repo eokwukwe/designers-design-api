@@ -89,11 +89,23 @@ class LoginController extends Controller
                 "errors" => [
                     "message" => "You need to verify your email"
                 ]
-            ], 422);
+            ], 403);
         }
 
         throw ValidationException::withMessages([
             $this->username() => "Invalid credentials"
         ]);
+    }
+
+    /**
+     * Log the user out (Invalidate the token).
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function logout()
+    {
+        $this->guard()->logout();
+
+        return response()->json(['message' => 'Successfully logged out']);
     }
 }
