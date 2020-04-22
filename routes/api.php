@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+// Public Routes
+Route::get('me', 'User\MeController@getMe');
 
 // Route group for authenticated users
 Route::group(['middleware' => ['auth:api']], function () {
