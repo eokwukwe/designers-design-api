@@ -36,7 +36,7 @@ class VerificationController extends Controller
         if ($user->hasVerifiedEmail()) {
             return response()->json([
                 'error' => [
-                    'message' => 'Email already verified'
+                    'message' => 'Email: ' . $user->email . ' already verified'
                 ]
             ], 422);
         }
@@ -46,12 +46,40 @@ class VerificationController extends Controller
         event(new Verified($user)); // Fire an event
 
         return response()->json([
-                'message' => 'Email successfully verifed'
+            'message' => 'Email successfully verifed'
         ], 200);
     }
 
     public function resend(Request $request, User $user)
     {
-        # code...
+        $this->validate($request, [
+            'email' => ['email', 'required']
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            return response()->json([
+                'error' => [
+                    'message' => 'User with email: ' . $request->email . ' not found'
+                ]
+            ], 404);
+        }
+
+        // Check if user has already verified
+        if ($user->hasVerifiedEmail()) {
+            return response()->json([
+                'error' => [
+                    'message' => 'Email: ' . $request->email . ' already verified'
+                ]
+            ], 422);
+        }
+
+        // Resend verification notification
+        $user->sendEmailVerificationNotification();
+
+        return response()->json([
+            'message' => 'Verification link has been resent to email: ' . $request->email,
+        ]);
     }
 }
