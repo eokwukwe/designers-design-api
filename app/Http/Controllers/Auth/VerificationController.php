@@ -17,7 +17,7 @@ class VerificationController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('signed')->only('verify');
+        // $this->middleware('signed')->only('verify');
         $this->middleware('throttle:6,1')->only('verify', 'resend');
     }
 
@@ -29,14 +29,14 @@ class VerificationController extends Controller
                 'error' => [
                     'message' => 'Invalid verification link'
                 ]
-            ], 422);
+            ], 403);
         }
 
         // Check if user has already verified
         if ($user->hasVerifiedEmail()) {
             return response()->json([
                 'error' => [
-                    'message' => 'Email: ' . $user->email . ' already verified'
+                    'message' => 'Email: ' . $user->email . ' is already verified'
                 ]
             ], 422);
         }
@@ -70,7 +70,7 @@ class VerificationController extends Controller
         if ($user->hasVerifiedEmail()) {
             return response()->json([
                 'error' => [
-                    'message' => 'Email: ' . $request->email . ' already verified'
+                    'message' => 'Email: ' . $request->email . ' is already verified'
                 ]
             ], 422);
         }
