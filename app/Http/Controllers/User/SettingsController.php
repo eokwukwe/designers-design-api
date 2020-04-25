@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\User;
 
 use Illuminate\Http\Request;
+use App\Rules\MatchOldPassword;
+use App\Rules\CheckSamePassword;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use Grimzy\LaravelMysqlSpatial\Types\Point;
@@ -24,8 +26,6 @@ class SettingsController extends Controller
 
         $location = new Point($request->location['latitude'], $request->location['longitude']);
 
-        // dd($location);
-
         $user->update([
             'name' => $request->name,
             'formatted_address' => $request->formatted_address,
@@ -35,13 +35,24 @@ class SettingsController extends Controller
             'tagline' => $request->tagline,
         ]);
 
-        // return response()->json([$user, $location], 200,);
-
         return new UserResource($user);
     }
 
     public function updatePassword(Request $request)
     {
-        # code...
+        $this->validate($request, [
+            'current_password' => ['required', new MatchOldPassword],
+            'password' => [
+                'required', 'confirmed', 'min:8', new CheckSamePassword
+            ],
+        ]);
+
+        $request->user()->update([
+            'password' => bcrypt($request->password)
+        ]);
+
+        return response()->json([
+            'message' => 'Password updated successfully'
+        ]);
     }
 }
