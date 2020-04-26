@@ -22,10 +22,15 @@ class UploadController extends Controller
         // get original filename, replace any spaces with underscore '_' and
         // convert to lowercase and add timestamp.
         // E.g. Business Cards.png ==> timestamp()_business_cards.png
-        $filename = time(). "_" .preg_replace('/\$+/', '_', strtolower($image->getClientOriginalName()));
+        $filename = time() . "_" .
+            preg_replace(
+                '/\s+/',
+                '_',
+                strtolower($image->getClientOriginalName())
+            );
 
         // move image to temporary location (tmp)
-        $tmp = $image->storeAs('uploads/original', $filename, 'tmp');
+        $tmp = $image->storeAs('uploads' . DIRECTORY_SEPARATOR . 'original', $filename, 'tmp');
 
         // create the database record for the uploaded design
         $design = auth()->user()->designs()->create([
@@ -37,6 +42,5 @@ class UploadController extends Controller
         $this->dispatch(new UploadImage($design));
 
         return response()->json($design, 200);
-
     }
 }
