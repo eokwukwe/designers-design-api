@@ -48,7 +48,8 @@ class UploadImage implements ShouldQueue
                 })
                 ->save(
                     $large = storage_path(
-                        'uploads/large/' . $filename
+                        'uploads/large/' .
+                            preg_replace('/original/', 'large', $filename)
                     )
                 );
 
@@ -59,7 +60,8 @@ class UploadImage implements ShouldQueue
                 })
                 ->save(
                     $thumbnail = storage_path(
-                        'uploads/thumbnail/' . $filename
+                        'uploads/thumbnail/' .
+                            preg_replace('/original/', 'thumbnail', $filename)
                     )
                 );
 
@@ -75,7 +77,7 @@ class UploadImage implements ShouldQueue
 
             // Large
             if (Storage::disk($disk)->put(
-                'uploads/designs/large/' . $filename,
+                'uploads/designs/large/' .  preg_replace('/original/', 'large', $filename),
                 fopen($large, 'r+')
             )) {
                 // Delete original file
@@ -83,7 +85,7 @@ class UploadImage implements ShouldQueue
             }
             // thumbnail
             if (Storage::disk($disk)->put(
-                'uploads/designs/thumbnail/' . $filename,
+                'uploads/designs/thumbnail/' .  preg_replace('/original/', 'thumbnail', $filename),
                 fopen($thumbnail, 'r+')
             )) {
                 // Delete original file

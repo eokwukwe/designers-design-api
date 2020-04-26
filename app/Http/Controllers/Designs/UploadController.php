@@ -18,16 +18,17 @@ class UploadController extends Controller
         // get image
         $image = $request->file('image');
         $image_path = $image->getPathname();
+        
+        // get original filename, replace any spaces $ underscores
+        // with dash '-' amd convert to lowercase.
+        // E.g. Business Cards.png ==> business-cards.png
+        $image_name = preg_replace(
+            '/[\s_]+/',
+            '-',
+            strtolower($image->getClientOriginalName())
+        );
 
-        // get original filename, replace any spaces with underscore '_' and
-        // convert to lowercase and add timestamp.
-        // E.g. Business Cards.png ==> timestamp()_business_cards.png
-        $filename = time() . "_" .
-            preg_replace(
-                '/\s+/',
-                '_',
-                strtolower($image->getClientOriginalName())
-            );
+        $filename = 'original' . "-" . time() . '-' . $image_name;
 
         // move image to temporary location (tmp)
         $tmp = $image->storeAs('uploads' . DIRECTORY_SEPARATOR . 'original', $filename, 'tmp');
