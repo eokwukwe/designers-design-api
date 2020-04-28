@@ -41,7 +41,7 @@ class Design extends Model
      * @param string $size The subfolder of the image.
      * @return string
      */
-    protected function getImagePath($size = 'original')
+    protected function getImagePath($size)
     {
         return Storage::disk($this->disk)->url(
             "uploads/designs/{$size}/" .

@@ -14,6 +14,8 @@ Route::group(['middleware' => ['auth:api']], function () {
     // Upload Designs
     Route::post('designs', 'Designs\UploadController@upload');
     Route::put('designs/{design}', 'Designs\DesignController@update');
+
+    Route::delete('designs/{design}', 'Designs\DesignController@destroy');
 });
 
 // Route group for guest users
