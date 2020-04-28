@@ -27,7 +27,6 @@ class UploadImage implements ShouldQueue
     public function __construct(Design $design)
     {
         $this->design = $design;
-        // $this->image = $request->file('image');
     }
 
     /**
