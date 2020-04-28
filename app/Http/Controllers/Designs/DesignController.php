@@ -11,6 +11,8 @@ class DesignController extends Controller
 {
     public function update(Request $request, Design $design)
     {
+        $this->authorize('update', $design);
+
         $this->validate($request, [
             'title' => ['required', 'unique:designs,title,' . $design->id],
             'description' => ['required', 'string', 'min:20', 'max:200'],
@@ -23,8 +25,6 @@ class DesignController extends Controller
             'is_live' => !$design->upload_successful
                 ? false : $request->is_live,
         ]);
-
-        
 
         return response()->json($design, 200);
     }
