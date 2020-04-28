@@ -18,6 +18,7 @@ class DesignController extends Controller
         $this->validate($request, [
             'title' => ['required', 'unique:designs,title,' . $design->id],
             'description' => ['required', 'string', 'min:20', 'max:200'],
+            'tags' => ['required', 'array'],
         ]);
 
         $design->update([
@@ -27,6 +28,9 @@ class DesignController extends Controller
             'is_live' => !$design->upload_successful
                 ? false : $request->is_live,
         ]);
+
+        // apply the tags
+        $design->retag($request->tags);
 
         return new DesignResource($design);
     }
