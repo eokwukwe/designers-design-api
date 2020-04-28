@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Designs;
 use App\Http\Controllers\Controller;
 use App\Jobs\UploadImage;
 use Illuminate\Http\Request;
+use JD\Cloudder\Facades\Cloudder;
+use Intervention\Image\Facades\Image;
 
 class UploadController extends Controller
 {
@@ -18,7 +20,7 @@ class UploadController extends Controller
         // get image
         $image = $request->file('image');
         $image_path = $image->getPathname();
-        
+
         // get original filename, replace any spaces $ underscores
         // with dash '-' amd convert to lowercase.
         // E.g. Business Cards.png ==> business-cards.png

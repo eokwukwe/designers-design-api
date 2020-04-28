@@ -1,5 +1,5 @@
 {
-    "name": "laravel/laravel",
+    "name": "design-house/design-house",
     "type": "project",
     "description": "The Laravel Framework.",
     "keywords": [
@@ -14,9 +14,11 @@
         "grimzy/laravel-mysql-spatial": "^3.0",
         "guzzlehttp/guzzle": "^6.3",
         "intervention/image": "^2.5",
+        "jrm2k6/cloudder": "^0.6.0",
         "laravel/framework": "^7.0",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.0",
+        "league/flysystem-aws-s3-v3": "^1.0",
         "tymon/jwt-auth": "^1.0"
     },
     "require-dev": {
