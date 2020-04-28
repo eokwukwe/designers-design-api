@@ -13,6 +13,7 @@ Route::group(['middleware' => ['auth:api']], function () {
 
     // Upload Designs
     Route::post('designs', 'Designs\UploadController@upload');
+    Route::post('designs/{design}', 'Designs\DesignController@update');
 });
 
 // Route group for guest users
