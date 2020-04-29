@@ -10,6 +10,6 @@ class UserRepository extends BaseRepository implements IUser
 {
   public function model()
   {
-    return User::class;  // === 'App\Models\User'
+    return User::class;  // === return 'App\Models\User'
   }
 }

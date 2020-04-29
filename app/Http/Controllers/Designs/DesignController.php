@@ -24,8 +24,15 @@ class DesignController extends Controller
         return DesignResource::collection($this->designs->all());
     }
 
-    public function update(Request $request, Design $design)
+    public function findDesign($id)
     {
+        return new DesignResource($this->designs->find($id));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $design = $this->designs->find($id);
+
         $this->authorize('update', $design);
 
         $this->validate($request, [
@@ -34,7 +41,7 @@ class DesignController extends Controller
             'tags' => ['required', 'array'],
         ]);
 
-        $design->update([
+        $design = $this->designs->update($id, [
             'title' => $request->title,
             'description' => $request->description,
             'slug' => Str::slug($request->title),
@@ -43,13 +50,15 @@ class DesignController extends Controller
         ]);
 
         // apply the tags
-        $design->retag($request->tags);
+        $this->designs->applyTags($id, $request->tags);
 
         return new DesignResource($design);
     }
 
-    public function destroy(Design $design)
+    public function destroy($id)
     {
+        $design = $this->designs->find($id);
+
         $this->authorize('delete', $design);
 
         // delete file associated with the record from the disk
@@ -61,7 +70,7 @@ class DesignController extends Controller
         }
 
         // delete image from the database
-        $design->delete();
+        $this->designs->delete($id);
 
         return response()->json([
             'message' => 'Record deleted successfully'
