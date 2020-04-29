@@ -4,6 +4,10 @@ use Illuminate\Support\Facades\Route;
 
 // Public Routes
 Route::get('me', 'User\MeController@getMe');
+Route::get('users', 'User\UserController@index');
+
+// Get designs
+Route::get('designs', 'Designs\DesignController@index');
 
 // Route group for authenticated users
 Route::group(['middleware' => ['auth:api']], function () {

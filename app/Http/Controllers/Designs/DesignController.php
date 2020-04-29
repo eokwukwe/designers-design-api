@@ -7,10 +7,23 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\DesignResource;
+use App\Repositories\Contracts\IDesign;
 use Illuminate\Support\Facades\Storage;
 
 class DesignController extends Controller
 {
+    protected $designs;
+
+    public function __construct(IDesign $designs)
+    {
+        $this->designs = $designs;
+    }
+
+    public function index()
+    {
+        return DesignResource::collection($this->designs->all());
+    }
+
     public function update(Request $request, Design $design)
     {
         $this->authorize('update', $design);
