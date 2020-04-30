@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\DesignResource;
 use App\Repositories\Contracts\IDesign;
+use App\Repositories\Eloquent\Criteria\IsLive;
+use App\Repositories\Eloquent\Criteria\LatestFirst;
 use Illuminate\Support\Facades\Storage;
 
 class DesignController extends Controller
@@ -21,7 +23,11 @@ class DesignController extends Controller
 
     public function index()
     {
-        return DesignResource::collection($this->designs->all());
+        $designs = $this->designs->withCriteria([
+            new LatestFirst,
+            new IsLive,
+        ])->all();
+        return DesignResource::collection($designs);
     }
 
     public function findDesign($id)
