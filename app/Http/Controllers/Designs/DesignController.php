@@ -31,7 +31,7 @@ class DesignController extends Controller
             new IsLive,
             new ForUser(1)
         ])->all();
-        
+
         return DesignResource::collection($designs);
     }
 
@@ -44,6 +44,7 @@ class DesignController extends Controller
     {
         $design = $this->designs->find($id);
 
+        // Apply policy
         $this->authorize('update', $design);
 
         $this->validate($request, [
@@ -70,6 +71,7 @@ class DesignController extends Controller
     {
         $design = $this->designs->find($id);
 
+        // Apply policy
         $this->authorize('delete', $design);
 
         // delete file associated with the record from the disk
