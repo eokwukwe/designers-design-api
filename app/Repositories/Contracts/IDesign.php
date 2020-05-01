@@ -6,5 +6,5 @@ interface IDesign
 {
     public function applyTags($id, array $data);
 
-    public function withCriteria(...$criteria);
+    public function addComment($designId, array $data);
 }

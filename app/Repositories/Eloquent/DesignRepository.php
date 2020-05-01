@@ -18,4 +18,13 @@ class DesignRepository extends BaseRepository implements IDesign
         $design = $this->find($id);
         return $design->retag($data);
     }
+
+    public function addComment($designId, array $data)
+    {
+        // get the design
+        $design = $this->find($designId);
+
+        // create the comment
+        return $design->comments()->create($data);
+    }
 }
