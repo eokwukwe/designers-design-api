@@ -6,11 +6,29 @@ use Illuminate\Database\Eloquent\Model;
 
 class Team extends Model
 {
-    protected $filleable = [
+    protected $fillable = [
         'name',
         'owner_id',
         'slug'
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        // when team is created, add current user as team member
+        static::created(function ($team)
+        {
+            // auth()->user()->teams()->attach($team->id);
+            $team->members()->attach(auth()->id());
+        });
+
+        // when a team is deleted, delete all membership
+        static::deleting(function ($team)
+        {
+            $team->members()->sync([]);
+        });
+    }
 
     public function owner()
     {
