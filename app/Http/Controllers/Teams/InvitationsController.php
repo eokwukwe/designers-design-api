@@ -82,6 +82,9 @@ class InvitationsController extends Controller
     {
         $invitation = $this->invitations->find($id);
 
+        // check if user owns the team
+        $this->authorize('resend', $invitation);
+
         // get the recipient by email
         $recipient = $this->users->findByEmail($invitation->recipient_email);
 
@@ -97,14 +100,54 @@ class InvitationsController extends Controller
         ], 200);
     }
 
-    public function response(Request $request, $id)
+    public function respond(Request $request, $id)
     {
-        # code...
+        $this->validate($request, [
+            'token' => ['required'],
+            'decision' => ['required']
+        ]);
+
+        $invitation = $this->invitations->find($id);
+
+        // check if invitation belongs to current user
+        $this->authorize('respond', $invitation);
+
+        // check for token match
+        if ($invitation->token !== $request->token) {
+            return response()->json([
+                'message' => 'Invalid token'
+            ], 401);
+        }
+
+        // check for acceptance
+        if ($request->decision !== 'deny') {
+            $this->invitations->addUserToTeam(
+                $invitation->team,
+                auth()->id()
+            );
+        }
+
+        // delete invitation from the database
+        $invitation->delete();
+
+        return response()->json([
+            'message' => 'Successful'
+        ], 200);
     }
 
     public function destroy($id)
     {
-        # code...
+        $invitation = $this->invitations->find($id);
+
+        // check if user is the sender of the invitation
+        $this->authorize('delete', $invitation);
+
+        // delete invitation from the database
+        $invitation->delete();
+
+        return response()->json([
+            'message' => 'Deleted'
+        ], 200);
     }
 
     protected function createInvitation(
