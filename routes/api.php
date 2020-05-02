@@ -29,6 +29,10 @@ Route::group(['middleware' => ['auth:api']], function () {
 
     // Likes and Unlikes
     Route::post('designs/{id}/likes', 'Designs\DesignController@like');
+    Route::get(
+        'designs/{id}/liked',
+        'Designs\DesignController@checkIfUserHasLiked'
+    );
 });
 
 // Route group for guest users

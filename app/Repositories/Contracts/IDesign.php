@@ -9,4 +9,6 @@ interface IDesign
     public function addComment($designId, array $data);
 
     public function like($id);
+
+    public function designLikedByUser($designId);
 }

@@ -101,6 +101,15 @@ class DesignController extends Controller
         ], 200);
     }
 
+    public function checkIfUserHasLiked($designId)
+    {
+        $liked = $this->designs->designLikedByUser($designId);
+
+        return response()->json([
+            'liked' => $liked,
+        ], 200);
+    }
+
     protected function fileExits($design, $size)
     {
         return Storage::disk($design->disk)->exists(
