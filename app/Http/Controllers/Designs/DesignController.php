@@ -53,9 +53,11 @@ class DesignController extends Controller
             'title' => ['required', 'unique:designs,title,' . $design->id],
             'description' => ['required', 'string', 'min:20', 'max:200'],
             'tags' => ['required', 'array'],
+            'team' => ['required_if:assign_to_team,true']
         ]);
 
         $design = $this->designs->update($id, [
+            'team_id' => $request->team,
             'title' => $request->title,
             'description' => $request->description,
             'slug' => Str::slug($request->title),

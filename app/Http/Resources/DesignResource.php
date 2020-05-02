@@ -20,7 +20,11 @@ class DesignResource extends JsonResource
             'description' => $this->description,
             'slug' => $this->slug,
             'is_live' => $this->is_live,
-            'likes_count' => $this->likes()->count() ,
+            'likes_count' => $this->likes()->count(),
+            'team' => $this->team ? [
+                'name' => $this->team->name,
+                'slug' => $this->team->slug,
+            ] : null,
             'images' => $this->images,
             'tag_list' => [
                 'tags' => $this->tagArray,
