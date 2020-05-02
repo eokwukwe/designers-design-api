@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Repositories\Eloquent\Criteria\{
     IsLive,
     ForUser,
+    EagerLoad,
     LatestFirst
 };
 
@@ -29,7 +30,8 @@ class DesignController extends Controller
         $designs = $this->designs->withCriteria([
             new LatestFirst,
             new IsLive,
-            new ForUser(1)
+            new ForUser(1),
+            new EagerLoad(['comments'])
         ])->all();
 
         return DesignResource::collection($designs);
@@ -87,6 +89,15 @@ class DesignController extends Controller
 
         return response()->json([
             'message' => 'Record deleted successfully'
+        ], 200);
+    }
+
+    public function like($id)
+    {
+        $this->designs->like($id);
+
+        return response()->json([
+            'message' => 'Successfully'
         ], 200);
     }
 

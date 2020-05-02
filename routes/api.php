@@ -26,6 +26,9 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('designs/{id}/comments', 'Designs\CommentController@store');
     Route::put('comments/{id}', 'Designs\CommentController@update');
     Route::delete('comments/{id}', 'Designs\CommentController@destroy');
+
+    // Likes and Unlikes
+    Route::post('designs/{id}/likes', 'Designs\DesignController@like');
 });
 
 // Route group for guest users
