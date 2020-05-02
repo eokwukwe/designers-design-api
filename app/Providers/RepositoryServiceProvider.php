@@ -5,13 +5,15 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use App\Repositories\Contracts\{
     IUser,
+    ITeam,
     IDesign,
-    IComment
+    IComment,
 };
 use App\Repositories\Eloquent\{
     UserRepository,
+    TeamRepository,
     DesignRepository,
-    CommentRepository
+    CommentRepository,
 };
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -33,6 +35,7 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->app->bind(ITeam::class, TeamRepository::class);
         $this->app->bind(IUser::class, UserRepository::class);
         $this->app->bind(IDesign::class, DesignRepository::class);
         $this->app->bind(IComment::class, CommentRepository::class);

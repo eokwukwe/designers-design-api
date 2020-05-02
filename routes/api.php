@@ -10,6 +10,10 @@ Route::get('users', 'User\UserController@index');
 Route::get('designs', 'Designs\DesignController@index');
 Route::get('designs/{id}', 'Designs\DesignController@findDesign');
 
+// Teams
+Route::get('teams/slug/{slug}', 'Teams\TeamsController@findBySlug');
+
+
 // Route group for authenticated users
 Route::group(['middleware' => ['auth:api']], function () {
     Route::post('logout', 'Auth\LoginController@logout');
@@ -33,6 +37,14 @@ Route::group(['middleware' => ['auth:api']], function () {
         'designs/{id}/liked',
         'Designs\DesignController@checkIfUserHasLiked'
     );
+
+    // Teams
+    Route::post('teams', 'Teams\TeamsController@store');
+    Route::get('teams/{id}', 'Teams\TeamsController@findById');
+    Route::get('teams', 'Teams\TeamsController@index');
+    Route::get('users/teams', 'Teams\TeamsController@getUserTeams');
+    Route::put('teams/{id}', 'Teams\TeamsController@update');
+    Route::delete('teams/{id}', 'Teams\TeamsController@destroy');
 });
 
 // Route group for guest users
