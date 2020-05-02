@@ -7,14 +7,23 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TeamResource;
 use App\Repositories\Contracts\ITeam;
+use App\Repositories\Contracts\IUser;
+use App\Repositories\Contracts\IInvitation;
 
 class TeamsController extends Controller
 {
     protected $teams;
+    protected $users;
+    protected $invitations;
 
-    public function __construct(ITeam $teams)
-    {
+    public function __construct(
+        ITeam $teams,
+        IUser $users,
+        IInvitation $invitations
+    ) {
         $this->teams = $teams;
+        $this->users = $users;
+        $this->invitations = $invitations;
     }
 
     /**
@@ -88,7 +97,6 @@ class TeamsController extends Controller
      */
     public function findBySlug($slug)
     {
-
     }
     /**
      * Delete a team
@@ -102,6 +110,39 @@ class TeamsController extends Controller
 
         return response()->json([
             'message' => 'Record deleted successfully'
+        ], 200);
+    }
+
+    /**
+     * Remove user from team
+     */
+    public function removeFromTeam($teamId, $userId)
+    {
+        $team = $this->teams->find($teamId);
+        $user = $this->users->find($userId);
+
+        // check that logged in user is not the owner
+        if ($user->isOwnerOfTeam($team)) {
+            return response()->json([
+                'message' => 'You are the team owner. You cannot remove yourself from the team'
+            ], 401);
+        }
+
+        // check that the person sending the request is either
+        // the team owner or the person who want to leave the team
+        if (
+            !auth()->user()->isOwnerOfTeam($team) &&
+            auth()->id() !== $user->id
+        ) {
+            return response()->json([
+                'message' => 'You are not allow to perform this action'
+            ], 401);
+        }
+
+        $this->invitations->removeUserFromTeam($team, $userId);
+
+        return response()->json([
+            'message' => 'User removed from team'
         ], 200);
     }
 }
