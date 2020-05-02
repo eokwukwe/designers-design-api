@@ -8,12 +8,14 @@ use App\Repositories\Contracts\{
     ITeam,
     IDesign,
     IComment,
+    IInvitation,
 };
 use App\Repositories\Eloquent\{
     UserRepository,
     TeamRepository,
     DesignRepository,
     CommentRepository,
+    InvitationRepository,
 };
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -39,5 +41,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(IUser::class, UserRepository::class);
         $this->app->bind(IDesign::class, DesignRepository::class);
         $this->app->bind(IComment::class, CommentRepository::class);
+        $this->app->bind(IInvitation::class, InvitationRepository::class);
     }
 }

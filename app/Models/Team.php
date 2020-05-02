@@ -17,15 +17,13 @@ class Team extends Model
         parent::boot();
 
         // when team is created, add current user as team member
-        static::created(function ($team)
-        {
+        static::created(function ($team) {
             // auth()->user()->teams()->attach($team->id);
             $team->members()->attach(auth()->id());
         });
 
         // when a team is deleted, delete all membership
-        static::deleting(function ($team)
-        {
+        static::deleting(function ($team) {
             $team->members()->sync([]);
         });
     }
@@ -51,5 +49,17 @@ class Team extends Model
         return $this->members()
             ->where('user_id', $user->id)
             ->first() ? true : false;
+    }
+
+    public function invitations()
+    {
+        return $this->hasMany(Invitation::class);
+    }
+
+    public function hasPendingInvite($email)
+    {
+        return (bool) $this->invitations()
+            ->where('recipient_email', $email)
+            ->count();
     }
 }
