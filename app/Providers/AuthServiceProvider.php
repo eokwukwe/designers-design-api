@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Team;
 use App\Models\Design;
 use App\Models\Comment;
+use App\Policies\TeamPolicy;
 use App\Policies\DesignPolicy;
 use App\Policies\CommentPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -18,6 +20,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         // 'App\Model' => 'App\Policies\ModelPolicy',
+        Team::class => TeamPolicy::class,
         Design::class => DesignPolicy::class,
         Comment::class => CommentPolicy::class,
     ];

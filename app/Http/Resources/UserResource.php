@@ -25,7 +25,9 @@ class UserResource extends JsonResource
             'location' => $this->location,
             'available_to_hire' => $this->available_to_hire,
             'about' => $this->about,
-            'designs' => $this->designs,
+            'designs' => DesignResource::collection(
+                $this->whenLoaded('designs')
+            ),
             'created_dates' => [
                 'created_at_human' => $this->created_at->diffForHumans(),
                 'created_at' => $this->created_at

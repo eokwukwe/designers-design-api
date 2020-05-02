@@ -14,5 +14,6 @@ class TeamRepository extends BaseRepository implements ITeam
 
     public function getUserTeams()
     {
+        return auth()->user()->teams;
     }
 }

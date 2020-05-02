@@ -46,9 +46,23 @@ class TeamsController extends Controller
     /**
      * Update a team
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        # code...
+        $team = $this->teams->find($id);
+        $this->authorize('update', $team);
+
+        $this->validate($request, [
+            'name' => [
+                'required', 'string', 'max:80', 'unique:teams,name,' . $id
+            ]
+        ]);
+
+        $team = $this->teams->update($id, [
+            'name' => $request->name,
+            'slug' => Str::slug($request->name)
+        ]);
+
+        return new TeamResource($team);
     }
 
     /**
@@ -56,7 +70,8 @@ class TeamsController extends Controller
      */
     public function findById($id)
     {
-        # code...
+        $team = $this->teams->find($id);
+        return new TeamResource($team);
     }
 
     /**
@@ -64,20 +79,29 @@ class TeamsController extends Controller
      */
     public function getUserTeams()
     {
-        # code...
+        return TeamResource::collection(
+            $this->teams->getUserTeams()
+        );
     }
     /**
      * Get team by slug for public view
      */
     public function findBySlug($slug)
     {
-        # code...
+
     }
     /**
      * Delete a team
      */
     public function destroy($id)
     {
-        # code...
+        $team = $this->teams->find($id);
+        $this->authorize('delete', $team);
+
+        $this->teams->delete($id);
+
+        return response()->json([
+            'message' => 'Record deleted successfully'
+        ], 200);
     }
 }
