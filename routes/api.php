@@ -64,6 +64,13 @@ Route::group(['middleware' => ['auth:api']], function () {
         'invitations/{id}',
         'Teams\InvitationsController@destroy'
     );
+
+    // Chats
+    Route::post('chats', 'Chats\ChatsController@sendMessage');
+    Route::get('chats', 'Chats\ChatsController@getUserChats');
+    Route::get('chats/{id}/messages', 'Chats\ChatsController@getChatMessages');
+    Route::put('chats/{id}/read', 'Chats\ChatsController@markAsRead');
+    Route::delete('messages/{id}', 'Chats\ChatsController@destroyMessage');
 });
 
 // Route group for guest users
