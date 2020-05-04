@@ -84,7 +84,10 @@ class ChatsController extends Controller
      */
     public function markAsRead($id)
     {
-        # code...
+        $chat = $this->chats->find($id);
+        $chat->markAsReadForUser(auth()->id());
+
+        return response()->json(['message' => 'Successful'], 200);
     }
 
     /**
@@ -92,6 +95,10 @@ class ChatsController extends Controller
      */
     public function destroyMessage($id)
     {
-        # code...
+        $message = $this->messages->find($id);
+        $this->authorize('delete', $message);
+        $message->delete();
+
+        return response()->json(['message' => 'Successful'], 200);
     }
 }
