@@ -11,4 +11,10 @@ class ChatRepository extends BaseRepository implements IChat
     {
         return Chat::class;  // === return 'App\Models\Chat'
     }
+
+    public function createParticipants($chatId, array $data)
+    {
+        $chat = $this->model->find($chatId);
+        $chat->participants()->sync($data);
+    }
 }
