@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Chats;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ChatResource;
 use App\Http\Resources\MessageResource;
 use App\Repositories\Contracts\IChat;
 use App\Repositories\Contracts\IMessage;
@@ -62,7 +63,8 @@ class ChatsController extends Controller
      */
     public function getUserChats(Request $request)
     {
-        # code...
+        $chats = $this->chats->getUserChats(auth()->id());
+        return ChatResource::collection($chats);
     }
 
     /**
