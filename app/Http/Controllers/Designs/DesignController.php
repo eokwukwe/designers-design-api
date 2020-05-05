@@ -36,11 +36,17 @@ class DesignController extends Controller
         return DesignResource::collection($designs);
     }
 
+    /**
+     *  find design by ID
+     */
     public function findDesign($id)
     {
         return new DesignResource($this->designs->find($id));
     }
 
+    /**
+     * Update design
+     */
     public function update(Request $request, $id)
     {
         $design = $this->designs->find($id);
@@ -70,6 +76,9 @@ class DesignController extends Controller
         return new DesignResource($design);
     }
 
+    /**
+     * Delete design from database
+     */
     public function destroy($id)
     {
         $design = $this->designs->find($id);
@@ -93,6 +102,9 @@ class DesignController extends Controller
         ], 200);
     }
 
+    /**
+     * Like dsign
+     */
     public function like($id)
     {
         $this->designs->like($id);
@@ -102,6 +114,9 @@ class DesignController extends Controller
         ], 200);
     }
 
+    /**
+     * Check if a user has liked a design
+     */
     public function checkIfUserHasLiked($designId)
     {
         $liked = $this->designs->designLikedByUser($designId);
@@ -111,6 +126,32 @@ class DesignController extends Controller
         ], 200);
     }
 
+    /**
+     * Find design by slug
+     */
+    public function findBySlug($slug)
+    {
+        $design = $this->designs->withCriteria([
+            new IsLive
+        ])->findWhereFirst('slug', $slug);
+
+        return new DesignResource($design);
+    }
+
+
+    /**
+     * Search for designs
+     */
+    public function search(Request $request)
+    {
+        $designs = $this->designs->search($request);
+
+        return DesignResource::collection($designs);
+    }
+
+    /**
+     * Check if a file exists in a disk
+     */
     protected function fileExits($design, $size)
     {
         return Storage::disk($design->disk)->exists(
@@ -119,18 +160,14 @@ class DesignController extends Controller
         );
     }
 
+    /**
+     * Delete from from disk
+     */
     protected function deleteFile($design, $size)
     {
         return Storage::disk($design->disk)->delete(
             "uploads/designs/{$size}/" .
                 preg_replace('/original/', $size, $design->image)
         );
-    }
-
-    public function search(Request $request)
-    {
-        $designs = $this->designs->search($request);
-
-        return DesignResource::collection($designs);
     }
 }
