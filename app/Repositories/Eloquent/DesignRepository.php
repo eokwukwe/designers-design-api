@@ -3,9 +3,9 @@
 namespace App\Repositories\Eloquent;
 
 use App\Models\Design;
+use Illuminate\Http\Request;
 use App\Repositories\Contracts\IDesign;
 use App\Repositories\Eloquent\BaseRepository;
-use Illuminate\Http\Request;
 
 class DesignRepository extends BaseRepository implements IDesign
 {
