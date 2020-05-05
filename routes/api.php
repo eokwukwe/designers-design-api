@@ -13,6 +13,7 @@ Route::get('designs/slug/{slug}', 'Designs\DesignController@findBySlug');
 
 // Teams
 Route::get('teams/slug/{slug}', 'Teams\TeamsController@findBySlug');
+Route::get('teams/{teamId}/designs', 'Designs\DesignController@getTeamDesigns');
 
 // Search Designs
 Route::get('search/designs', 'Designs\DesignController@search');

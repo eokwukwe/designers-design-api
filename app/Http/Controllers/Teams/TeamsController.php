@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Teams;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\DesignResource;
 use App\Http\Resources\TeamResource;
 use App\Repositories\Contracts\ITeam;
 use App\Repositories\Contracts\IUser;
