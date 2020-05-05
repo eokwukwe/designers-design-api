@@ -150,6 +150,17 @@ class DesignController extends Controller
         return DesignResource::collection($design);
     }
 
+    /**
+     * Get all user's designs
+     */
+    public function getUserDesigns($userId)
+    {
+        $design = $this->designs->withCriteria([
+            new IsLive
+        ])->findWhere('user_id', $userId);
+
+        return DesignResource::collection($design);
+    }
 
     /**
      * Search for designs
