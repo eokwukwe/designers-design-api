@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Designs;
 
-use App\Models\Design;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -126,5 +125,12 @@ class DesignController extends Controller
             "uploads/designs/{$size}/" .
                 preg_replace('/original/', $size, $design->image)
         );
+    }
+
+    public function search(Request $request)
+    {
+        $designs = $this->designs->search($request);
+
+        return DesignResource::collection($designs);
     }
 }
