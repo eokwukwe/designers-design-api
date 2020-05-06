@@ -30,6 +30,7 @@ class UserResource extends JsonResource
             'location' => $this->location,
             'available_to_hire' => $this->available_to_hire,
             'about' => $this->about,
+            'photo_url' => $this->photo_url,
             'designs' => DesignResource::collection(
                 $this->whenLoaded('designs')
             ),
