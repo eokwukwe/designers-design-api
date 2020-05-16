@@ -1,12 +1,19 @@
 {
-    "name": "design-house/design-house",
+    "name": "eokwukwe/designers-design",
     "type": "project",
-    "description": "The Laravel Framework.",
+    "description": "API for designers to show their creativity to the world.",
     "keywords": [
-        "framework",
-        "laravel"
+        "designer",
+        "designs",
+        "api"
     ],
     "license": "MIT",
+    "authors": [
+        {
+            "name": "Okwukwe Ewurum",
+            "email": "okwukwe.ewurum@gmail.com"
+        }
+    ],
     "require": {
         "php": "^7.2.5",
         "cviebrock/eloquent-taggable": "^7.0",
