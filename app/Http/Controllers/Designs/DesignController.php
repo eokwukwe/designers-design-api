@@ -29,7 +29,6 @@ class DesignController extends Controller
         $designs = $this->designs->withCriteria([
             new LatestFirst,
             new IsLive,
-            new ForUser(1),
             new EagerLoad(['comments'])
         ])->all();
 
@@ -151,7 +150,7 @@ class DesignController extends Controller
     }
 
     /**
-     * Get all user design
+     * Get a user design
      */
     public function getUserDesign($id)
     {
@@ -167,9 +166,7 @@ class DesignController extends Controller
      */
     public function getUserDesigns($userId)
     {
-        $design = $this->designs->withCriteria([
-            new IsLive
-        ])->findWhere('user_id', $userId);
+        $design = $this->designs->findWhere('user_id', $userId);
 
         return DesignResource::collection($design);
     }

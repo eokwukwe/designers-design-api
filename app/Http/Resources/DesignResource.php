@@ -39,6 +39,7 @@ class DesignResource extends JsonResource
                 'updated_at' => $this->updated_at
             ],
             'user' => new UserResource($this->whenLoaded('user')),
+            'comments_count' => $this->comments()->count(),
             'comments' => CommentResource::collection(
                 $this->whenLoaded('comments')
             ),
