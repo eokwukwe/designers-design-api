@@ -81,6 +81,7 @@ class TeamsController extends Controller
     public function findById($id)
     {
         $team = $this->teams->find($id);
+        dd($team);
         return new TeamResource($team);
     }
 
@@ -89,9 +90,8 @@ class TeamsController extends Controller
      */
     public function getUserTeams()
     {
-        return TeamResource::collection(
-            $this->teams->getUserTeams()
-        );
+        $teams = $this->teams->getUserTeams();
+        return TeamResource::collection($teams);
     }
     /**
      * Get team by slug for public view

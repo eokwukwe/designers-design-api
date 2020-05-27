@@ -33,6 +33,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('designs', 'Designs\UploadController@upload');
     Route::put('designs/{id}', 'Designs\DesignController@update');
 
+    Route::get('designs/{id}/byUser', 'Designs\DesignController@getUserDesign');
     Route::delete('designs/{id}', 'Designs\DesignController@destroy');
 
     // Comments
@@ -48,10 +49,10 @@ Route::group(['middleware' => ['auth:api']], function () {
     );
 
     // Teams
-    Route::post('teams', 'Teams\TeamsController@store');
-    Route::get('teams/{id}', 'Teams\TeamsController@findById');
     Route::get('teams', 'Teams\TeamsController@index');
-    Route::get('users/teams', 'Teams\TeamsController@getUserTeams');
+    Route::post('teams', 'Teams\TeamsController@store');
+    Route::get('user/teams', 'Teams\TeamsController@getUserTeams');
+    Route::get('teams/{id}', 'Teams\TeamsController@findById');
     Route::put('teams/{id}', 'Teams\TeamsController@update');
     Route::delete('teams/{id}', 'Teams\TeamsController@destroy');
     Route::delete(

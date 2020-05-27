@@ -143,11 +143,23 @@ class DesignController extends Controller
      */
     public function getTeamDesigns($teamId)
     {
-        $design = $this->designs->withCriteria([
+        $designs = $this->designs->withCriteria([
             new IsLive
         ])->findWhere('team_id', $teamId);
 
-        return DesignResource::collection($design);
+        return DesignResource::collection($designs);
+    }
+
+    /**
+     * Get all user design
+     */
+    public function getUserDesign($id)
+    {
+        $design = $this->designs->withCriteria([
+            new ForUser(auth()->id())
+        ])->findWhereFirst('id', $id);
+
+        return new DesignResource($design);
     }
 
     /**
