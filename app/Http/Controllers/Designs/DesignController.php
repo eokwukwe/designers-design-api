@@ -106,10 +106,11 @@ class DesignController extends Controller
      */
     public function like($id)
     {
-        $this->designs->like($id);
+        $totalLikes = $this->designs->like($id);
 
         return response()->json([
-            'message' => 'Successfully'
+            'message' => 'Successfully',
+            'total' => $totalLikes,
         ], 200);
     }
 
@@ -131,7 +132,8 @@ class DesignController extends Controller
     public function findBySlug($slug)
     {
         $design = $this->designs->withCriteria([
-            new IsLive
+            new IsLive,
+            new EagerLoad(['user', 'comments'])
         ])->findWhereFirst('slug', $slug);
 
         return new DesignResource($design);
